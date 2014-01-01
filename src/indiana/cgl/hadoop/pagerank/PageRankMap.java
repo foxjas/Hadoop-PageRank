@@ -35,20 +35,19 @@ public class PageRankMap extends Mapper<LongWritable, Text, LongWritable, Text> 
 				// scatter its rank value to all other urls
 				double rankValuePerUrl = rrd.rankValue/(double)numUrls;
 				for (int i=0;i<numUrls;i++){
-				context.write(new LongWritable(i), new Text(String.valueOf(rankValuePerUrl)));
+					context.write(new LongWritable(i), new Text(String.valueOf(rankValuePerUrl)));
 				}
 			} else {
-			/*Write your code here*/
 				/*Write your code here*/
-				double rankValuePerOutUrl = rrd.rankValue/(double)rrd.targetUrlsList.size();
-				mapOutput.append(rankValuePerOutUrl);
+				double rankValuePerTargetUrl = rrd.rankValue/(double)rrd.targetUrlsList.size();
 				Iterator<Integer> targetUrlsIterator = rrd.targetUrlsList.iterator();
 				while (targetUrlsIterator.hasNext()) {
-					int nextUrl = targetUrlsIterator.next();
+					long nextUrl = targetUrlsIterator.next();
+					context.write(new LongWritable(nextUrl), new Text(String.valueOf(rankValuePerTargetUrl))); //output <targetUrl, rankValuePerTargetURL value> pair
 					mapOutput.append("#" + nextUrl);
 				}
+				context.write(new LongWritable(rrd.sourceUrl), new Text(mapOutput.toString())); //output <sourceUrl, #targetURLs> pair
 			} //for
-			context.write(new LongWritable(rrd.sourceUrl), new Text(mapOutput.toString()));
 		} // end map
 
 }

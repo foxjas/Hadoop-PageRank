@@ -32,10 +32,10 @@ public class PageRankReduce extends Reducer<LongWritable, Text, LongWritable, Te
 			if (strArray.length == 1){ // no outUrls, only PR for this url. Separate length == 1 case necessary? 
 				/*Write your code here*/
 				sumOfRankValues += Double.parseDouble(strArray[0]);
+				//targetUrlsList += "#"; // necessary? 
 			}
 			else{
 				/*Write your code here*/
-				sumOfRankValues += Double.parseDouble(strArray[0]);
 				for (int i = 1; i < strArray.length; i++) {
 					targetUrlsList += "#" + strArray[i];
 				}
